@@ -7,8 +7,6 @@ public class Sheep extends Animals {
 	
 	private int power = 3;
 	private int initiative = 3;
-	private Position position;
-	private Position lastPosition;
 	private int liveLength;
 	private int powerToReproduce;
 	private char sign = 'S';
