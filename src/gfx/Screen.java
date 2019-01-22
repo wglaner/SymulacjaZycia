@@ -39,6 +39,7 @@ public class Screen {
 				int xSheet = x;
 				int col = (colour >> (sheet.pixels[xSheet + ySheet * sheet.width + tileOffset] * 8)) & 255;
 				if (col < 255) pixels[(x+xPos + (y+yPos) *width)] = col;
+				
 			}
 		}
 	}
