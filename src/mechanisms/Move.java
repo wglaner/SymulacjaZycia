@@ -22,7 +22,7 @@ public class Move implements MoveMechanism {
 	public Position move(AllFormsOfLife o) {
 		Random random = new Random();
 		Position position = o.getPosition();
-		World world = o.getWorld();
+		World world = o.getUniverse();
 		int direction = random.nextInt(7);
 		
 		int boundryX = world.getLayoutX();

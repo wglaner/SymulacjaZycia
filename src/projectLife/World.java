@@ -23,7 +23,7 @@ public class World {
 	private int layoutY;
 	private int grassCount = 0;
 	private int sheepCount = 0;
-	private int wolfCount = 0;
+	private int lionCount = 0;
 	private final String separator = " ";
 	
 	public World(String name, int width, int length) {
@@ -63,11 +63,11 @@ public class World {
 	public void setSheepCount(int sheepCount) {
 		this.sheepCount = sheepCount;
 	}
-	public int getWolfCount() {
-		return wolfCount;
+	public int getLionCount() {
+		return lionCount;
 	}
-	public void setWolfCount(int wolfCount) {
-		this.wolfCount = wolfCount;
+	public void setLionCount(int lionCount) {
+		this.lionCount = lionCount;
 	}
 	public void setLayoutY(int length) {
 		this.layoutY = length;
@@ -146,19 +146,19 @@ public class World {
     	spawned_organisms.clear();
     }
     
-    public void checkCollisions(ArrayList<Organism> all_orgs){
+    public void checkCollisions(ArrayList<AllFormsOfLife> all_orgs){
     	switch (all_orgs.size()) {
     		case 1:
     			break;
     		case 2:
-    			Organism inhabitant = all_orgs.get(0);
-    			Organism intruder = all_orgs.get(1); 	
+    			AllFormsOfLife inhabitant = all_orgs.get(0);
+    			AllFormsOfLife intruder = all_orgs.get(1); 	
     			collision(inhabitant, intruder);
     			break;
     	}
     }   
     
-    public void collision(Organism inhabitant, Organism intruder) {
+    public void collision(AllFormsOfLife inhabitant, AllFormsOfLife intruder) {
 		
     	if (intruder instanceof Sheep) {
 			
@@ -169,7 +169,7 @@ public class World {
 			else if (inhabitant instanceof Sheep) {
 				spawned_organisms.add(intruder.getReproduction().reproduce(intruder));
 			}
-			else if (inhabitant instanceof Wolf) {
+			else if (inhabitant instanceof Lion) {
 				inhabitant.getGrowing().grow(((Sheep) intruder).getNUTRITION(), inhabitant);
 				intruder.setPosition(new Position(-1, -1));
 			}
@@ -181,9 +181,9 @@ public class World {
 				intruder.setPosition(new Position(-1, -1));
 			}
 		}
-		else if (intruder instanceof Wolf) {
+		else if (intruder instanceof Lion) {
 			
-			if (inhabitant instanceof Wolf) {
+			if (inhabitant instanceof Lion) {
 				spawned_organisms.add(intruder.getReproduction().reproduce(intruder));
 			}
 			else if (inhabitant instanceof Sheep) {
@@ -196,7 +196,7 @@ public class World {
     	
     	setGrassCount(0);
     	setSheepCount(0);
-    	setWolfCount(0);
+    	setLionCount(0);
     	
     	for (AllFormsOfLife o : inhabitants) {
     		if (o instanceof Grass) {
@@ -206,35 +206,41 @@ public class World {
     			setSheepCount(getSheepCount() + 1);
     		}
     		else if (o instanceof Lion) {
-    			setWolfCount(getLionCount() + 1);
+    			setLionCount(getLionCount() + 1);
     		}
     	}
     }
     
     public void balance() {
     	
-    	/*DO ZROBIENIA!!!!
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 * 
-    	 */
+    	if (grassCount <= sheepCount * 3) {
+    		spawned_organisms.add(new Grass(getRandomFreePosition(), this, 1, 10));
+    	}
+    	if (sheepCount < lionCount) {
+    		spawned_organisms.add(new Sheep(getRandomFreePosition(), this, 10, 500, 1));
+    	}
+    	if (sheepCount > 2 * lionCount) {
+    		spawned_organisms.add(new Lion(getRandomFreePosition(), this, 10, 1000, 500));
+    	}
+    	if (lionCount > sheepCount) {
+    		for (AllFormsOfLife org : inhabitants) {
+    			if (org instanceof Lion) {
+    				org.setPosition(new Position(-1, -1));
+    				break;
+    			}
+    		}
+    	}
     }
+    
     
 	public String toString() {
 		String result = "";
         for (int i=0; i < this.layoutX + 5;i++) {
-        	result += '%';
+        	result += '*';
         }
         result += "\n";
         for (int y=0; y <= this.getLayoutY(); y++){
-        	result += "% ";
+        	result += "* ";
             for (int x=0; x <= this.getLayoutX(); x++){
                 AllFormsOfLife org = this.getOrganismFromPosition(new Position(x, y));
                 if (org != null){
@@ -244,10 +250,10 @@ public class World {
                     result += this.getSeparator();
                 }
             }
-            result += " %\n";
+            result += " *\n";
         }
         for (int i=0; i < this.layoutX + 5;i++) {
-        	result += '%';
+        	result += '*';
         }
         result += "\n";
         return result;

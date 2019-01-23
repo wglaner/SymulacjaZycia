@@ -5,6 +5,6 @@ import organisms.AllFormsOfLife;
 
 public interface OrganismGrowingMechanism {
 
-	public Position move(AllFormsOfLife o);
+	public void grow(int growth_value, AllFormsOfLife o);
 	
 }

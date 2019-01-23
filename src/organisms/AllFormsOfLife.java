@@ -22,11 +22,11 @@ public abstract class AllFormsOfLife {
 		this.max_hit_points = max_hit_points;
 	}
 	
-	public AllFormsOfLife(AllFormsOfLife all) {
-		this.position = new Position(all.position);
-		this.universe = all.universe;
-		this.hit_points = all.hit_points;
-		this.max_hit_points = all.max_hit_points;
+	public AllFormsOfLife(AllFormsOfLife org) {
+		this.position = new Position(org.position);
+		this.universe = org.universe;
+		this.hit_points = org.hit_points;
+		this.max_hit_points = org.max_hit_points;
 	}
 	public abstract AllFormsOfLife clone();
 	
